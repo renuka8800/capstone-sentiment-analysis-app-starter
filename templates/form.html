@@ -1,12 +1,43 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Sentiment Analysis</title>
-    </head>
-    <body>
-        <form method="POST">
-            <textarea name="user_text" rows="5"></textarea>
-            <input type="submit" value="Analyze Text">
-        </form>
-    </body>
+<head>
+    <title>Sentiment Scope Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+    <h2>Sentiment Scope Analyzer</h2>
+    <p class="sub">Analyze customer feedback using VADER and a custom ML model</p>
+
+    <form method="POST">
+      <textarea name="user_text" rows="6" placeholder="Enter text here...">{{ user_text }}</textarea>
+      <br>
+      <button type="submit">Analyze Text</button>
+    </form>
+
+    {% if sentiment %}
+      <div class="section">
+        <h3>VADER Sentiment Results</h3>
+        <div class="grid">
+          <div class="pill">Positive: <strong>{{ (sentiment['pos'] * 100) | round(2) }}%</strong></div>
+          <div class="pill">Neutral: <strong>{{ (sentiment['neu'] * 100) | round(2) }}%</strong></div>
+          <div class="pill">Negative: <strong>{{ (sentiment['neg'] * 100) | round(2) }}%</strong></div>
+          <div class="pill">Compound: <strong>{{ (sentiment['compound'] * 100) | round(2) }}%</strong></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Custom Model Result</h3>
+        <div class="pill">
+          Positive Probability:
+          <strong>{{ (sentiment['custom model positive'] * 100) | round(2) }}%</strong>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+</body>
 </html>
